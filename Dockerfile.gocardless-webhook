@@ -7,7 +7,7 @@ RUN npm i lerna -g --loglevel notice
 RUN mkdir /data
 
 COPY package*.json ./
-RUN npm install --loglevel notice
+RUN yarn install --loglevel notice
 
 COPY packages/emails ./packages/emails
 COPY packages/gocardless-client ./packages/gocardless-client

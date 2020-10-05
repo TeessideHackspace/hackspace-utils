@@ -1,7 +1,6 @@
 import { Gocardless } from '@teessidehackspace/gocardless-client';
 import { Keycloak, User } from '@teessidehackspace/keycloak-client';
 import { Email } from '@teessidehackspace/emails';
-import { createHmac } from 'crypto';
 
 const HACKSPACE_OIDC_CLIENT = 'hackspace-api';
 const MEMBER_ROLE_NAME = 'member';
