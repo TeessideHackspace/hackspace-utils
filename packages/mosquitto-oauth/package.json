@@ -15,6 +15,7 @@
     "lib"
   ],
   "scripts": {
+    "build": "tsc",
     "tsc": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
