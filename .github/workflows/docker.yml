@@ -15,6 +15,14 @@ jobs:
           version: latest
           install: true
 
+    - name: Cache Docker layers
+      uses: actions/cache@v2
+      with:
+        path: /tmp/.buildx-cache
+        key: ${{ runner.os }}-buildx-${{ github.sha }}
+        restore-keys: |
+        ${{ runner.os }}-buildx-
+
       - name: Login to DockerHub
         uses: docker/login-action@v1
         with:
@@ -27,6 +35,8 @@ jobs:
           file: ./Dockerfile.gocardless-hasura
           push: true
           tags: teessidehackspace/gocardless-hasura:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: gocardless-webhook - Build and push
         uses: docker/build-push-action@v2
@@ -34,6 +44,8 @@ jobs:
           file: ./Dockerfile.gocardless-webhook
           push: true
           tags: teessidehackspace/gocardless-webhook:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: matrix-spacebot - Build and push
         uses: docker/build-push-action@v2
@@ -41,6 +53,8 @@ jobs:
           file: ./Dockerfile.matrix-spacebot
           push: true
           tags: teessidehackspace/matrix-spacebot:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
       - name: mosquitto-oauth - Build and push
         uses: docker/build-push-action@v2
@@ -48,3 +62,5 @@ jobs:
           file: ./Dockerfile.mosquitto-oauth
           push: true
           tags: teessidehackspace/mosquitto-oauth:latest
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
