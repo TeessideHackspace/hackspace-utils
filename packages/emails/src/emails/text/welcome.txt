@@ -1,0 +1,6 @@
+Welcome to Teesside Hackspace, ${name}!
+
+To get 24/7 access to the space, you will need to attend an open evening and collect an RFID access card. If you're unable to attend an open evening, please contact us at trustees@teessidehackspace.org.uk and we will send you a card in the post.
+Feel free to claim an empty plastic storage box to keep your stuff in, and label it with your name.
+If you haven't already joined the discussion on Slack, go here for an invitation: http://slacksignup.teessidehackspace.org.uk/
+Please familiarise yourself with the Notes for Memebers here: https://wiki.teessidehackspace.org.uk/wiki/Notes_for_Members

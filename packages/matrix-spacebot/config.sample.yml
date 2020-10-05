@@ -1,0 +1,22 @@
+room_access:
+  # Matrix server name e.g. example.com
+  server_name: teessidehackspace.org.uk
+  # Where we look for uninvited members
+  default_room: '!GjknPMnvhsQzRiKUSo'
+  # How often to reconcile users in milliseconds
+  poll_frequency: 30000
+  # Users that we should ignore when kicking
+  whitelist_users:
+    - spacebot
+    - slackbot
+  # Rooms where we auto invite
+  controlled_rooms:
+    - id: '!VwxxYtmvUzkUeSKesj'
+      label: Members
+      required_role: member
+    - id: '!WIzXPpazQsUGOzdQYD'
+      label: Automation
+      required_role: member
+    - id: '!pfOZKMruUGeXztDhFe'
+      label: Trustees
+      required_role: trustee

@@ -1,0 +1,11 @@
+<mj-section>
+  <mj-column width="150px">
+    <mj-image
+      width="128px"
+      src="http://www.teessidehackspace.org.uk/hackspace_logo.jpg"
+    ></mj-image>
+  </mj-column>
+  <mj-column>
+    <mj-text font-size="36px" font-weight="900">Teesside Hackspace</mj-text>
+  </mj-column>
+</mj-section>

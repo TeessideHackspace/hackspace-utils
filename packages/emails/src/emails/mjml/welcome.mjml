@@ -1,0 +1,14 @@
+<mjml>
+  <mj-body background-color="#f6f6f6">
+    <mj-wrapper background-color="#fff">
+      <mj-include path="./common/header.mjml" />
+      <mj-section>
+        <mj-column>
+          <mj-text>We're sorry to see you leave, ${name}. </mj-text>
+          <mj-text>Your membership has been cancelled, either directly or by cancelling your direct debit. If this is a mistake, please click <a href="https://www.teessidehackspace.org.uk/members#changeSubscription" target="_blank"> here</a> to reactivate your membership.</mj-text>
+          <mj-text>If Teesside Hackspace didn't live up to your expectations, please email us at <a href="mailto:trustees@teessidehackspace.org.uk" target="_blank">trustees@teessidehackspace.org.uk</a> and let us know how we can improve.</mj-text>
+        </mj-column>
+    </mj-wrapper>
+    <mj-include path="./common/footer.mjml" />
+  </mj-body>
+</mjml>

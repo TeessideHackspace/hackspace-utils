@@ -1,0 +1,16 @@
+<mjml>
+  <mj-body background-color="#f6f6f6">
+    <mj-wrapper background-color="#fff">
+      <mj-include path="./common/header.mjml" />
+      <mj-section>
+        <mj-column>
+          <mj-text>Welcome to Teesside Hackspace, ${name}!</mj-text>
+          <mj-text>To get 24/7 access to the space, you will need to attend an open evening and collect an RFID access card. If you're unable to attend an open evening, please contact us at <a href="mailto:trustees@teessidehackspace.org.uk">trustees@teessidehackspace.org.uk</a> and we will send you a card in the post.</mj-text>
+          <mj-text>Feel free to claim an empty plastic storage box to keep your stuff in, and label it with your name.</mj-text>
+          <mj-text>If you haven't already joined the discussion on Slack, <a href="http://slacksignup.teessidehackspace.org.uk/" target="_blank"> click here</a> for an invitation.</mj-text>
+          <mj-text>Please familiarise yourself with the <a href="https://wiki.teessidehackspace.org.uk/wiki/Notes_for_Members" target="_blank">Notes for Members</a>.</mj-text>
+        </mj-column>
+    </mj-wrapper>
+    <mj-include path="./common/footer.mjml" />
+  </mj-body>
+</mjml>

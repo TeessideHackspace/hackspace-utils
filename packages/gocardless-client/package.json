@@ -1,0 +1,26 @@
+{
+  "name": "@teessidehackspace/gocardless-client",
+  "version": "0.0.0",
+  "description": "> TODO: description",
+  "author": "Jim Allanson <jim@amplience.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "tsc": "tsc",
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "gocardless-nodejs": "^1.4.0"
+  },
+  "devDependencies": {}
+}

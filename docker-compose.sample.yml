@@ -1,0 +1,49 @@
+version: '3.3'
+
+services:
+  matrix-spacebot:
+    build:
+      context: .
+      dockerfile: Dockerfile.matrix-spacebot
+    image: teessidehackspace/matrix-spacebot
+    environment:
+      KEYCLOAK_URL: ${KEYCLOAK_URL}
+      KEYCLOAK_USERNAME: ${KEYCLOAK_USERNAME}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      MATRIX_HOMESERVER: ${MATRIX_HOMESERVER}
+      SPACEBOT_TOKEN: ${SPACEBOT_TOKEN}
+    volumes:
+      - './packages/matrix-spacebot/config.sample.yml:/config/config.yml'
+
+  mosquitto-oauth:
+    build:
+      context: .
+      dockerfile: Dockerfile.mosquitto-oauth
+    image: teessidehackspace/mosquitto-oauth
+    environment:
+      TOKEN_ENDPOINT: ${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token
+
+  gocardless-webhook:
+    build:
+      context: .
+      dockerfile: Dockerfile.gocardless-webhook
+    image: teessidehackspace/gocardless-webhook
+    environment:
+      KEYCLOAK_URL: ${KEYCLOAK_URL}
+      KEYCLOAK_USERNAME: ${KEYCLOAK_USERNAME}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      GOCARDLESS_KEY: ${GOCARDLESS_KEY}
+      GOCARDLESS_REDIRECT: ${GOCARDLESS_REDIRECT}
+      GOCARDLESS_WEBHOOK_SECRET: ${GOCARDLESS_WEBHOOK_SECRET}
+
+  gocardless-hasura:
+    build:
+      context: .
+      dockerfile: Dockerfile.gocardless-hasura
+    image: teessidehackspace/gocardless-hasura
+    environment:
+      KEYCLOAK_URL: ${KEYCLOAK_URL}
+      KEYCLOAK_USERNAME: ${KEYCLOAK_USERNAME}
+      KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
+      GOCARDLESS_KEY: ${GOCARDLESS_KEY}
+      GOCARDLESS_REDIRECT: ${GOCARDLESS_REDIRECT}
