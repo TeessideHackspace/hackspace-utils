@@ -8,7 +8,7 @@ import {
   RedirectFlow,
   SubscriptionIntervalUnit,
   SubscriptionStatus,
-} from 'gocardless-nodejs';
+} from 'gocardless-nodejs/types/Types';
 
 export class Gocardless {
   private gocardless: GoCardlessClient;
