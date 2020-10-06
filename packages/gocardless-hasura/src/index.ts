@@ -17,13 +17,16 @@ app.use(function (err, req, res, next) {
   res.status(500).send({});
 });
 
-app.post('/gocardless_redirect', service.gocardlessRedirect);
-app.post('/gocardless_redirect_confirm', service.gocardlessRedirectConfirm);
-app.post('/subscribe', service.subscribe);
-app.post('/update_subscription', service.updateSubscription);
-app.post('/cancel_subscription', service.cancelSubscription);
-app.post('/stats', service.stats);
-app.post('/get_mandate', service.getMandate);
-app.post('/get_subscription', service.getSubscription);
+app.post('/gocardless_redirect', service.gocardlessRedirect.bind(service));
+app.post(
+  '/gocardless_redirect_confirm',
+  service.gocardlessRedirectConfirm.bind(service),
+);
+app.post('/subscribe', service.subscribe.bind(service));
+app.post('/update_subscription', service.updateSubscription.bind(service));
+app.post('/cancel_subscription', service.cancelSubscription.bind(service));
+app.post('/stats', service.stats.bind(service));
+app.post('/get_mandate', service.getMandate.bind(service));
+app.post('/get_subscription', service.getSubscription.bind(service));
 
 app.listen(process.env.PORT || 3000);
