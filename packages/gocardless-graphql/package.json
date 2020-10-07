@@ -1,5 +1,5 @@
 {
-  "name": "@teessidehackspace/gocardless-hasura",
+  "name": "@teessidehackspace/gocardless-graphql",
   "version": "0.0.0",
   "description": "> TODO: description",
   "author": "Jim Allanson <jim@amplience.com>",
@@ -22,14 +22,19 @@
   "dependencies": {
     "@teessidehackspace/gocardless-client": "^0.0.0",
     "@teessidehackspace/keycloak-client": "^0.0.0",
+    "apollo-server-express": "^2.18.2",
     "body-parser": "^1.19.0",
     "express": "^4.16.4",
+    "express-jwt": "^6.0.0",
+    "graphql": "^15.3.0",
     "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.10.1",
     "node-fetch": "2.6.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.0",
     "@types/express": "^4.17.8",
+    "@types/express-jwt": "^0.0.42",
     "@types/jsonwebtoken": "^8.5.0",
     "@types/node-fetch": "^2.5.7"
   }

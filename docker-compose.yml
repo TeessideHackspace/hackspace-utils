@@ -20,6 +20,8 @@ services:
       context: .
       dockerfile: Dockerfile.mosquitto-oauth
     image: teessidehackspace/mosquitto-oauth
+    ports:
+      - 50000:3000
     environment:
       TOKEN_ENDPOINT: ${KEYCLOAK_URL}/realms/master/protocol/openid-connect/token
 
@@ -28,6 +30,8 @@ services:
       context: .
       dockerfile: Dockerfile.gocardless-webhook
     image: teessidehackspace/gocardless-webhook
+    ports:
+      - 50001:3000
     environment:
       KEYCLOAK_URL: ${KEYCLOAK_URL}
       KEYCLOAK_USERNAME: ${KEYCLOAK_USERNAME}
@@ -36,11 +40,13 @@ services:
       GOCARDLESS_REDIRECT: ${GOCARDLESS_REDIRECT}
       GOCARDLESS_WEBHOOK_SECRET: ${GOCARDLESS_WEBHOOK_SECRET}
 
-  gocardless-hasura:
+  gocardless-graphql:
     build:
       context: .
       dockerfile: Dockerfile.gocardless-hasura
     image: teessidehackspace/gocardless-hasura
+    ports:
+      - 50002:3000
     environment:
       KEYCLOAK_URL: ${KEYCLOAK_URL}
       KEYCLOAK_USERNAME: ${KEYCLOAK_USERNAME}

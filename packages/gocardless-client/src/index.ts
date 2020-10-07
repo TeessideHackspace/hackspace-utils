@@ -92,11 +92,15 @@ export class Gocardless {
   }
 
   async allSubscriptions(): Promise<Subscription[]> {
-    const response = await this.gocardless.subscriptions.list({
-      limit: '1000',
-      status: [SubscriptionStatus.Active],
+    const subscriptions = [];
+    const response = this.gocardless.subscriptions.all({
+      //@ts-ignore https://github.com/gocardless/gocardless-nodejs/issues/83
+      status: SubscriptionStatus.Active,
     });
-    return response.subscriptions;
+    for await (const sub of response) {
+      subscriptions.push(sub);
+    }
+    return subscriptions;
   }
 
   async setHackspaceId(

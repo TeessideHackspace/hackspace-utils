@@ -1,5 +1,5 @@
-import * as express from 'express';
-import * as bodyParser from 'body-parser';
+import express = require('express');
+import bodyParser = require('body-parser');
 import { AuthService } from './service';
 
 const PORT = process.env.PORT || 3000;

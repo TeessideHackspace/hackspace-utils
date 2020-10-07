@@ -11,7 +11,7 @@ RUN yarn install --loglevel notice
 
 COPY packages/gocardless-client ./packages/gocardless-client
 COPY packages/keycloak-client ./packages/keycloak-client
-COPY packages/gocardless-hasura ./packages/gocardless-hasura
+COPY packages/gocardless-graphql ./packages/gocardless-graphql
 
 COPY lerna.json .
 COPY tsconfig.json .
@@ -20,4 +20,4 @@ RUN lerna run build
 
 EXPOSE 3000
 
-CMD [ "node", "packages/gocardless-hasura/lib/index.js" ]
+CMD [ "node", "packages/gocardless-graphql/lib/index.js" ]
