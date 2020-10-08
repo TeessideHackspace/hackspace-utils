@@ -29,12 +29,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: gocardless-hasura - Build and push
+      - name: gocardless-graphql - Build and push
         uses: docker/build-push-action@v2
         with:
-          file: ./Dockerfile.gocardless-hasura
+          file: ./Dockerfile.gocardless-graphql
           push: true
-          tags: teessidehackspace/gocardless-hasura:latest
+          tags: teessidehackspace/gocardless-graphql:latest
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache
 
