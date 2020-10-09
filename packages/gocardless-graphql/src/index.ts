@@ -33,7 +33,7 @@ const typeDefs = gql`
     id: String
     reference: String
     status: String!
-    created_at: String
+    createdAt: String
     nextPossibleChargeDate: String
   }
 
