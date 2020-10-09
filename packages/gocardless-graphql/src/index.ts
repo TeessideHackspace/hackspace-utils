@@ -100,9 +100,7 @@ const server = new ApolloServer({
     };
   },
 });
-
 const app = express();
-app.use(server.getMiddleware());
 app.use(
   jwt({
     secret: expressJwtSecret({
@@ -112,6 +110,7 @@ app.use(
     credentialsRequired: false,
   }),
 );
+app.use(server.getMiddleware());
 
 app.listen({ port: process.env.PORT || 3000 }, () =>
   console.log(`🚀 Server ready`),
