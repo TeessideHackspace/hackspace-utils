@@ -5,7 +5,7 @@
   "author": "Jim Allanson <jim@amplience.com>",
   "homepage": "",
   "license": "ISC",
-  "main": "gulpfile.babel.js",
+  "main": "lib/index.js",
   "typings": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
