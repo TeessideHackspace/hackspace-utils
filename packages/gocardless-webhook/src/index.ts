@@ -20,5 +20,7 @@ app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(500).send({});
 });
-app.post('/gocardless_webhook', service.handleWebhook);
+app.post('/gocardless_webhook', (req, res) => {
+  return service.handleWebhook(req, res);
+});
 app.listen(process.env.PORT || 3000);
