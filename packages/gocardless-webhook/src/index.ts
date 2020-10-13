@@ -13,7 +13,9 @@ const service = new GocardlessWebhookService(
 
 const app = express();
 app.use(bodyParser.json());
-app.use(service.verifyWebhook);
+app.use((req, res, next) => {
+  return service.verifyWebhook(req, res, next);
+});
 app.use(function (err, req, res, next) {
   console.error(err.stack);
   res.status(500).send({});
