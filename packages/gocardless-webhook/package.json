@@ -17,6 +17,7 @@
   "scripts": {
     "build": "tsc",
     "tsc": "tsc",
+    "start": "cross-env TZ=UTC NODE_ENV=development tsnd --inspect --respawn src/index.ts",
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {

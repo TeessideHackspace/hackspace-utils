@@ -26,7 +26,7 @@ export class Gocardless {
 
   async getMandateByCustomer(customer: string): Promise<Mandate> {
     const mandates = await this.gocardless.mandates.list({ customer });
-    return mandates[0];
+    return mandates.mandates[0];
   }
 
   async getCustomerByMandate(mandateId: string): Promise<Customer> {
@@ -38,7 +38,7 @@ export class Gocardless {
     const subscriptions = await this.gocardless.subscriptions.list({
       customer,
     });
-    return subscriptions[0];
+    return subscriptions.subscriptions[0];
   }
 
   async getCustomerBySubscription(subscriptionId: string): Promise<Customer> {

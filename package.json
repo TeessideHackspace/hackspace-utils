@@ -5,7 +5,8 @@
     "packages/*"
   ],
   "scripts": {
-    "start:graphql": "dotenv -- lerna run --scope @teessidehackspace/gocardless-graphql start"
+    "start:graphql": "dotenv -- lerna run --scope @teessidehackspace/gocardless-graphql start",
+    "start:webhook": "dotenv -- lerna run --scope @teessidehackspace/gocardless-webhook start"
   },
   "devDependencies": {
     "@types/node": "^14.11.1",

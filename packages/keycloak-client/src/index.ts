@@ -10,8 +10,8 @@ export interface User {
 }
 
 export interface UserAttributes {
-  nickName?: string;
-  gocardless?: string;
+  nickName?: string | string[];
+  gocardless?: string | string[];
 }
 
 export class Keycloak {
