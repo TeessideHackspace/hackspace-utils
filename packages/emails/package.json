@@ -15,7 +15,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "npm run templates && tsc",
+    "build": "npm run templates && cp -R ./src/emails ./lib && tsc",
     "tsc": "tsc",
     "test": "echo \"Error: run tests from root\" && exit 1",
     "templates": "mjml -r ./src/emails/mjml/*.mjml -o ./src/emails/html"
