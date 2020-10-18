@@ -106,7 +106,7 @@ const server = new ApolloServer({
   resolvers,
   context: ({ req }) => {
     return {
-      user: (req as RequestWithUser).user.sub,
+      user: (req as RequestWithUser).user?.sub,
     };
   },
 });
