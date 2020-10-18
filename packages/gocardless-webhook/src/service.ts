@@ -1,4 +1,5 @@
-import { Gocardless } from '@teessidehackspace/gocardless-client';
+import { Request, Response, NextFunction } from 'express';
+import { Gocardless, Event } from '@teessidehackspace/gocardless-client';
 import { Keycloak, User } from '@teessidehackspace/keycloak-client';
 import { Email } from '@teessidehackspace/emails';
 
@@ -27,11 +28,12 @@ export class GocardlessWebhookService {
     this.email = new Email();
   }
 
-  async verifyWebhook(req, res, next) {
+  async verifyWebhook(req: Request, res: Response, next: NextFunction) {
+    const signature = req.header('webhook-signature');
     if (
-      !req.headers['webhook-signature'] ||
+      !signature ||
       !this.gocardless.validateWebhook(
-        req.headers['webhook-signature'],
+        signature || '',
         JSON.stringify(req.body, null, 0),
         this.gocardlessWebhookSecret,
       )
@@ -43,8 +45,8 @@ export class GocardlessWebhookService {
     return next();
   }
 
-  async handleWebhook(req, res) {
-    for (let event of req.body.events) {
+  async handleWebhook(req: Request, res: Response) {
+    for (let event of req.body.events as Event[]) {
       if (event.resource_type === 'mandates') {
         await this.handleMandateEvent(event);
       } else if (event.resource_type === 'subscriptions') {
@@ -54,7 +56,7 @@ export class GocardlessWebhookService {
     return res.status(200).end();
   }
 
-  private async handleMandateEvent(event) {
+  private async handleMandateEvent(event: Event) {
     const customer = await this.gocardless.getCustomerByMandate(
       event.links.mandate,
     );
@@ -67,7 +69,7 @@ export class GocardlessWebhookService {
     }
   }
 
-  private async handleSubscriptionEvent(event) {
+  private async handleSubscriptionEvent(event: Event) {
     const customer = await this.gocardless.getCustomerBySubscription(
       event.links.subscription,
     );
@@ -82,23 +84,23 @@ export class GocardlessWebhookService {
 
   private async handleCancelledMembership(user: User): Promise<void> {
     await this.keycloak.deleteClientRole(
-      user.id,
+      user.id!,
       HACKSPACE_OIDC_CLIENT,
       MEMBER_ROLE_NAME,
     );
-    return this.email.cancelled(user.email, {
-      name: user.firstName,
+    return this.email.cancelled(user.email!, {
+      name: user.firstName!,
     });
   }
 
   private async handleSignup(user: User) {
     await this.keycloak.addClientRole(
-      user.id,
+      user.id!,
       HACKSPACE_OIDC_CLIENT,
       MEMBER_ROLE_NAME,
     );
-    return this.email.welcome(user.email, {
-      name: user.firstName,
+    return this.email.welcome(user.email!, {
+      name: user.firstName!,
     });
   }
 }

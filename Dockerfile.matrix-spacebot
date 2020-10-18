@@ -2,21 +2,16 @@ FROM node:14
 
 WORKDIR /usr/src/app
 
-RUN npm i lerna -g --loglevel notice
-
-RUN mkdir /data
-
-COPY package*.json ./
-RUN yarn install --loglevel notice
-
 COPY packages/keycloak-client ./packages/keycloak-client
 COPY packages/matrix-spacebot ./packages/matrix-spacebot
-
+COPY package.json .
+COPY yarn.lock .
 COPY lerna.json .
 COPY tsconfig.json .
-RUN lerna bootstrap
-RUN lerna run build
+
+RUN mkdir /data
+RUN yarn install --loglevel notice
 
 EXPOSE 3000
 
-CMD [ "node", "packages/matrix-spacebot/lib/index.js" ]
+CMD [ "yarn", "--cwd", "packages/matrix-spacebot", "run", "start" ]

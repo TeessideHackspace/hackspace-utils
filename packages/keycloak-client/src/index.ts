@@ -66,7 +66,7 @@ export class Keycloak {
     await this.reauth();
     const clients = await this.keycloak.clients.find({ clientId });
     return this.keycloak.clients.findUsersWithRole({
-      id: clients[0].id,
+      id: clients[0].id!,
       roleName,
     });
   }
@@ -81,15 +81,15 @@ export class Keycloak {
     });
     const client = clients[0];
     const role = await this.keycloak.clients.findRole({
-      id: client.id,
+      id: client.id!,
       roleName: roleName,
     });
     return {
       id,
-      clientUniqueId: clients[0].id,
+      clientUniqueId: clients[0].id!,
       roles: [
         {
-          id: role.id,
+          id: role.id!,
           name: roleName,
         },
       ],

@@ -1,15 +1,22 @@
-import express = require('express');
-import jwt = require('express-jwt');
+import express from 'express';
+import jwt from 'express-jwt';
 import { GocardlessService } from './service';
 import { ApolloServer, gql } from 'apollo-server-express';
 import { expressJwtSecret } from 'jwks-rsa';
+import { Request } from 'express';
+
+interface RequestWithUser extends Request {
+  user: {
+    sub: string;
+  };
+}
 
 const service = new GocardlessService(
-  process.env.KEYCLOAK_URL,
-  process.env.KEYCLOAK_USERNAME,
-  process.env.KEYCLOAK_PASSWORD,
-  process.env.GOCARDLESS_KEY,
-  process.env.GOCARDLESS_REDIRECT,
+  process.env.KEYCLOAK_URL!,
+  process.env.KEYCLOAK_USERNAME!,
+  process.env.KEYCLOAK_PASSWORD!,
+  process.env.GOCARDLESS_KEY!,
+  process.env.GOCARDLESS_REDIRECT!,
 );
 
 const typeDefs = gql`
@@ -63,16 +70,16 @@ interface Context {
 const resolvers = {
   Query: {
     stats: async () => await service.stats(),
-    subscription: async (_, args: Object, context: Context) =>
+    subscription: async (_: Object, __: Object, context: Context) =>
       await service.getSubscription(context.user),
-    mandate: async (_, args: Object, context: Context) =>
+    mandate: async (_: Object, __: Object, context: Context) =>
       await service.getMandate(context.user),
   },
   Mutation: {
-    generateRedirectUrl: async (_, args: Object, context: Context) =>
+    generateRedirectUrl: async (_: Object, __: Object, context: Context) =>
       await service.gocardlessRedirect(context.user),
     confirmRedirect: async (
-      _,
+      _: Object,
       args: { redirectFlowId: string },
       context: Context,
     ) =>
@@ -80,15 +87,18 @@ const resolvers = {
         context.user,
         args.redirectFlowId,
       ),
-    subscribe: async (_, args: { amount: number }, context: Context) =>
+    subscribe: async (_: Object, args: { amount: number }, context: Context) =>
       await service.subscribe(context.user, args.amount),
     changeSubscriptionAmount: async (
-      _,
+      _: Object,
       args: { amount: number },
       context: Context,
     ) => await service.updateSubscription(context.user, args.amount),
-    cancelSubscription: async (_, args: { amount: number }, context: Context) =>
-      await service.cancelSubscription(context.user),
+    cancelSubscription: async (
+      _: Object,
+      __: { amount: number },
+      context: Context,
+    ) => await service.cancelSubscription(context.user),
   },
 };
 const server = new ApolloServer({
@@ -96,7 +106,7 @@ const server = new ApolloServer({
   resolvers,
   context: ({ req }) => {
     return {
-      user: req['user']?.sub,
+      user: (req as RequestWithUser).user.sub,
     };
   },
 });

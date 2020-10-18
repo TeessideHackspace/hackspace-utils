@@ -1,17 +1,36 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "declaration": true,
-    "noImplicitAny": false,
-    "removeComments": true,
-    "noLib": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
-    "target": "es6",
-    "sourceMap": true,
+    "baseUrl": ".",
+    "allowJs": true,
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": ["es6"]
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "preserveConstEnums": true,
+    "removeComments": false,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+    "target": "es2017",
+    "downlevelIteration": true,
+    "lib": ["es2017"],
+    "strict": true,
+    "paths": {
+      "@teessidehackspace/emails": ["../emails/src"],
+      "@teessidehackspace/emails/*": ["../emails/src/*"],
+      "@teessidehackspace/gocardless-client": ["../gocardless-client/src"],
+      "@teessidehackspace/gocardless-client/*": ["../gocardless-client/src/*"],
+      "@teessidehackspace/keycloak-client": ["../keycloak-client/src"],
+      "@teessidehackspace/keycloak-client/*": ["../keycloak-client/src/*"]
+    }
   },
   "exclude": ["node_modules", "**/*.spec.ts"]
 }

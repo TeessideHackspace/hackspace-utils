@@ -38,12 +38,12 @@ export class RoomAccessService {
     for (let room of this.config.room_access.controlled_rooms) {
       const roomId = `${room.id}:${this.config.room_access.server_name}`;
       const usersInRoom = await this.client.getJoinedRoomMembers(roomId);
-      const idsInRoom = usersInRoom.map((x) => x.match(/@(.+?):/)[1]);
+      const idsInRoom = usersInRoom.map((x) => x.match(/@(.+?):/)![1]);
       const usersWithPerm = await this.keycloak.getUsersWithRole(
         room.role_client,
         room.required_role,
       );
-      const allowedUsers = usersWithPerm.map((x) => x.username);
+      const allowedUsers = usersWithPerm.map((x) => x.username!);
 
       this.getUsersToInvite(idsInRoom, allowedUsers).forEach((x) =>
         this.client.inviteUser(x, roomId),

@@ -44,7 +44,7 @@ export class GocardlessService {
   async subscribe(user: string, amount: number) {
     this.validateSubscriptionAmount(amount);
     const gocardlessId = await this.getGocardlessId(user);
-    const mandate = await this.gocardless.getMandateByCustomer(gocardlessId);
+    const mandate = await this.gocardless.getMandateByCustomer(gocardlessId!);
     if (!mandate) {
       throw new ApolloError('Mandate not found.');
     }
@@ -59,7 +59,7 @@ export class GocardlessService {
     this.validateSubscriptionAmount(amount);
     const gocardlessId = await this.getGocardlessId(user);
     let subscription = await this.gocardless.getSubscriptionByCustomer(
-      gocardlessId,
+      gocardlessId!,
     );
     if (!subscription) {
       throw new ApolloError('Subscription not found.');
@@ -74,7 +74,7 @@ export class GocardlessService {
   async cancelSubscription(user: string) {
     const gocardlessId = await this.getGocardlessId(user);
     let subscription = await this.gocardless.getSubscriptionByCustomer(
-      gocardlessId,
+      gocardlessId!,
     );
     if (!subscription) {
       throw new ApolloError('Subscription not found.');
@@ -127,7 +127,7 @@ export class GocardlessService {
 
   private async getGocardlessId(user: string) {
     const keycloakUser = await this.keycloak.getUser(user);
-    if (keycloakUser.attributes.gocardless?.length) {
+    if (keycloakUser.attributes?.gocardless?.length) {
       return keycloakUser.attributes.gocardless[0];
     }
     return null;

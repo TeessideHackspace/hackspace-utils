@@ -1,6 +1,6 @@
-import { render, configure } from 'nunjucks';
 import { createTransport, Transporter } from 'nodemailer';
 import { SES } from 'aws-sdk';
+import { readFile } from 'fs/promises';
 
 const FROM_ADDRESS = 'trustees@teessidehackspace.org.uk';
 
@@ -12,7 +12,6 @@ export class Email {
   private transport: Transporter;
 
   constructor() {
-    configure('./emails');
     this.transport = createTransport({
       SES: new SES(),
     });
@@ -42,12 +41,20 @@ export class Email {
     subject: string,
     params: any,
   ) {
+    const htmlTemplate = await readFile(
+      `${__dirname}/emails/html/${template}.html`,
+      'utf8',
+    );
+    const textTemplate = await readFile(
+      `${__dirname}/emails/text/${template}.txt`,
+      'utf8',
+    );
     return this.transport.sendMail({
       to,
       subject,
       from: FROM_ADDRESS,
-      html: render(`html/${template}.html`, params),
-      text: render(`text/${template}.txt`, params),
+      html: htmlTemplate.replace(/\${(.*?)}/g, (_, g) => params[g]),
+      text: textTemplate.replace(/\${(.*?)}/g, (_, g) => params[g]),
     });
   }
 }

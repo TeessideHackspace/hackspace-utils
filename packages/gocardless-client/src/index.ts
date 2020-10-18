@@ -9,7 +9,7 @@ import {
   SubscriptionIntervalUnit,
   SubscriptionStatus,
 } from 'gocardless-nodejs/types/Types';
-
+export type { Event } from 'gocardless-nodejs/types/Types';
 export class Gocardless {
   private gocardless: GoCardlessClient;
   constructor(gocardlessKey: string, private redirectUrl: string) {
@@ -63,8 +63,6 @@ export class Gocardless {
       description: 'Teesside Hackspace Membership',
       session_token: this.hashToken(token),
       success_redirect_url: this.redirectUrl,
-      //Bad type definition in gocardless lib
-      links: undefined,
     });
     return response.redirect_url;
   }
@@ -94,8 +92,7 @@ export class Gocardless {
   async allSubscriptions(): Promise<Subscription[]> {
     const subscriptions = [];
     const response = this.gocardless.subscriptions.all({
-      //@ts-ignore https://github.com/gocardless/gocardless-nodejs/issues/83
-      status: SubscriptionStatus.Active,
+      status: [SubscriptionStatus.Active],
     });
     for await (const sub of response) {
       subscriptions.push(sub);

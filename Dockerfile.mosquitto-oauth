@@ -2,20 +2,14 @@ FROM node:14
 
 WORKDIR /usr/src/app
 
-RUN npm i lerna -g --loglevel notice
-
-RUN mkdir /data
-
-COPY package*.json ./
-RUN yarn install --loglevel notice
-
 COPY packages/mosquitto-oauth ./packages/mosquitto-oauth
-
+COPY package.json .
+COPY yarn.lock .
 COPY lerna.json .
 COPY tsconfig.json .
-RUN lerna bootstrap
-RUN lerna run build
+
+RUN yarn install --loglevel notice
 
 EXPOSE 3000
 
-CMD [ "node", "packages/mosquitto-oauth/lib/index.js" ]
+CMD [ "yarn", "--cwd", "packages/mosquitto-oauth", "run", "start" ]

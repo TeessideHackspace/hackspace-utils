@@ -13,8 +13,8 @@ LogService.setLevel(LogLevel.INFO);
 
 const storage = new SimpleFsStorageProvider('/data/spacebot.json');
 const client = new MatrixClient(
-  process.env.MATRIX_HOMESERVER,
-  process.env.SPACEBOT_TOKEN,
+  process.env.MATRIX_HOMESERVER!,
+  process.env.SPACEBOT_TOKEN!,
   storage,
 );
 AutojoinRoomsMixin.setupOnClient(client);
@@ -25,9 +25,9 @@ const config: Config = safeLoad(
 const roomService = new RoomAccessService(
   config,
   client,
-  process.env.KEYCLOAK_URL,
-  process.env.KEYCLOAK_USERNAME,
-  process.env.KEYCLOAK_PASSWORD,
+  process.env.KEYCLOAK_URL!,
+  process.env.KEYCLOAK_USERNAME!,
+  process.env.KEYCLOAK_PASSWORD!,
 );
 
 setInterval(async () => {

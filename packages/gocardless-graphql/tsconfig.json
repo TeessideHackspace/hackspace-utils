@@ -1,9 +1,12 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig",
   "compilerOptions": {
-    "outDir": "./lib"
+    "baseUrl": ".",
+    "module": "esnext",
+    "noEmit": false,
+    "outDir": "lib",
+    "target": "es2017",
+    "isolatedModules": true
   },
-  "include": [
-    "./src"
-  ]
+  "exclude": ["lib"]
 }

@@ -39,12 +39,15 @@ services:
       GOCARDLESS_KEY: ${GOCARDLESS_KEY}
       GOCARDLESS_REDIRECT: ${GOCARDLESS_REDIRECT}
       GOCARDLESS_WEBHOOK_SECRET: ${GOCARDLESS_WEBHOOK_SECRET}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      AWS_REGION: ${AWS_REGION}
 
   gocardless-graphql:
     build:
       context: .
-      dockerfile: Dockerfile.gocardless-hasura
-    image: teessidehackspace/gocardless-hasura
+      dockerfile: Dockerfile.gocardless-graphql
+    image: teessidehackspace/gocardless-graphql
     ports:
       - 50002:3000
     environment:
@@ -53,6 +56,3 @@ services:
       KEYCLOAK_PASSWORD: ${KEYCLOAK_PASSWORD}
       GOCARDLESS_KEY: ${GOCARDLESS_KEY}
       GOCARDLESS_REDIRECT: ${GOCARDLESS_REDIRECT}
-      AWS_ACCESS_KEY_ID: ${SES_ACCESS_KEY}
-      AWS_SECRET_ACCESS_KEY: ${SES_SECRET}
-      AWS_REGION: eu-west-1
