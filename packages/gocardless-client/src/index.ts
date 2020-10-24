@@ -24,6 +24,10 @@ export class Gocardless {
     return this.gocardless.customers.find(id);
   }
 
+  async getMandateById(id: string): Promise<Mandate> {
+    return this.gocardless.mandates.find(id);
+  }
+
   async getMandateByCustomer(customer: string): Promise<Mandate> {
     const mandates = await this.gocardless.mandates.list({ customer });
     return mandates.mandates[0];

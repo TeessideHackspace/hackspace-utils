@@ -35,8 +35,8 @@ export class GocardlessService {
       gocardless: redirect.links.customer,
     });
     await this.gocardless.setHackspaceId(redirect.links.customer, user);
-    const mandate = await this.gocardless.getMandateByCustomer(
-      redirect.links.customer,
+    const mandate = await this.gocardless.getMandateById(
+      redirect.links.mandate,
     );
     return this.formatMandate(user, mandate);
   }
