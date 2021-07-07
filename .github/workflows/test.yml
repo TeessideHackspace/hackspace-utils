@@ -1,0 +1,39 @@
+name: Test
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Build the Postgres stack
+        working-directory: packages/spaceman
+        run: docker-compose up -d
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: yarn install, build, and test
+        working-directory: packages/spaceman
+        run: |
+          yarn install --frozen-lockfile
+          yarn test:e2e
+        env:
+          CI: true
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: 5432
+          POSTGRES_USERNAME: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DATABASE: postgres
+          RUN_MIGRATIONS: true
+          GOCARDLESS_KEY: sandbox_VznDMAtA-pxC0SepmN0BDYxJK2YkmU31-iM9Hv6M
+          GOCARDLESS_REDIRECT_URI: http://localhost:3000

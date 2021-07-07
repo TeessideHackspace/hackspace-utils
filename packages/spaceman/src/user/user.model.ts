@@ -1,15 +1,21 @@
 import { Field, ObjectType } from '@nestjs/graphql';
+import { GocardlessMandate } from '../gocardless/mandate.model';
+import { Address } from './address/address.model';
 
 @ObjectType()
 export class User {
-  constructor(id: string, nickname: string) {
-    this.id = id;
-    this.nickname = nickname;
-  }
-
   @Field((_type) => String)
-  id: string;
+  id!: number;
 
-  @Field((_type) => String)
-  nickname: string;
+  @Field((_type) => String, { nullable: true })
+  nickname?: string;
+
+  @Field((_type) => String, { nullable: true })
+  gocardlessId?: string;
+
+  @Field((_type) => GocardlessMandate, { nullable: true })
+  mandate?: GocardlessMandate;
+
+  @Field((_type) => Address, { nullable: true })
+  address?: Address;
 }

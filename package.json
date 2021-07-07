@@ -5,7 +5,7 @@
     "packages/*"
   ],
   "scripts": {
-    "start:spaceman": "dotenv -- lerna run --scope @teessidehackspace/spaceman start --stream",
+    "start:spaceman": "dotenv -- lerna run --scope @teessidehackspace/spaceman start:dev --stream",
     "start:graphql": "dotenv -- lerna run --scope @teessidehackspace/gocardless-graphql start --stream",
     "start:webhook": "dotenv -- lerna run --scope @teessidehackspace/gocardless-webhook start --stream"
   },

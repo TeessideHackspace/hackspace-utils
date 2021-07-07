@@ -1,14 +1,19 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './user/users.module';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
+      context: () => {
+        return {
+          user: 'foo',
+        };
+      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -19,7 +24,7 @@ import { UsersModule } from './user/users.module';
       database: 'postgres',
       autoLoadEntities: true,
       migrationsTableName: 'migration',
-      migrations: ['dist/migration/*.js'],
+      migrations: ['dist/spaceman/src/migration/*.js'],
       migrationsRun: true,
       cli: {
         migrationsDir: 'src/migration',
@@ -27,7 +32,6 @@ import { UsersModule } from './user/users.module';
     }),
     UsersModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  providers: [],
 })
 export class AppModule {}

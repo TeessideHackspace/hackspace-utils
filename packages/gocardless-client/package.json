@@ -20,7 +20,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "gocardless-nodejs": "^1.4.1"
+    "gocardless-nodejs": "^2.1.0"
   },
   "devDependencies": {}
 }
