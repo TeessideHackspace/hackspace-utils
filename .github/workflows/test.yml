@@ -33,5 +33,5 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DATABASE: postgres
           RUN_MIGRATIONS: true
-          GOCARDLESS_KEY: sandbox_VznDMAtA-pxC0SepmN0BDYxJK2YkmU31-iM9Hv6M
+          GOCARDLESS_KEY: sandbox_foo
           GOCARDLESS_REDIRECT_URI: http://localhost:3000
