@@ -5,9 +5,10 @@ export const Sub = createParamDecorator(
   (_: unknown, context: ExecutionContext) => {
     const ctx = GqlExecutionContext.create(context);
     const user = ctx.getContext()?.user;
-    if (typeof user !== 'string') {
+    console.log(user);
+    if (typeof user.sub !== 'string') {
       throw new Error('User is not authenticated');
     }
-    return ctx.getContext().user;
+    return user.sub;
   },
 );

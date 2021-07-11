@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
-import request from 'supertest';
 import nock from 'nock';
-import { AppModule } from './../src/app.module';
+import { AppModule } from '../src/app.module';
+import { gqlRequest } from './utils/utils';
 
 const gql = String.raw;
 
@@ -23,13 +23,7 @@ describe('AppController (e2e)', () => {
     await app.close();
   });
 
-  function gqlRequest(app: INestApplication, query: string) {
-    return request(app.getHttpServer()).post('/graphql').send({
-      query: query,
-    });
-  }
-
-  describe('get global stats', () => {
+  describe('Public Stats', () => {
     it('should return an error if unable to communicate with gocardless', async () => {
       nock('https://api-sandbox.gocardless.com/')
         .get('/subscriptions?status=active')

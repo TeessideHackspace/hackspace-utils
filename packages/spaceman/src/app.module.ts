@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './user/users.module';
 
 @Module({
@@ -9,11 +10,6 @@ import { UsersModule } from './user/users.module';
     ConfigModule.forRoot(),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
-      context: () => {
-        return {
-          user: 'foo',
-        };
-      },
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -30,6 +26,7 @@ import { UsersModule } from './user/users.module';
         migrationsDir: 'src/migration',
       },
     }),
+    AuthModule,
     UsersModule,
   ],
   providers: [],

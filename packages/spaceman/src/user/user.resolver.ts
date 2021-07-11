@@ -11,7 +11,10 @@ import {
 import { GocardlessService } from '../gocardless/gocardless.service';
 import { Sub } from '../decorators/sub.decorator';
 import { SetAddressInput } from './dto/setAddress.input';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { UseGuards } from '@nestjs/common';
 
+@UseGuards(JwtAuthGuard)
 @Resolver(() => User)
 export class UserResolver {
   constructor(
