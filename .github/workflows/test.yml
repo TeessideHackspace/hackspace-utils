@@ -35,3 +35,4 @@ jobs:
           RUN_MIGRATIONS: true
           GOCARDLESS_KEY: sandbox_foo
           GOCARDLESS_REDIRECT_URI: http://localhost:3000
+          JWT_ISSUER_URL: https://auth.teessidehackspace.org.uk/auth/realms/master/protocol/openid-connect/certs
