@@ -15,7 +15,7 @@ export class User {
   @Column()
   sub!: string;
 
-  @Column()
+  @Column({ nullable: true })
   nickname?: string;
 
   @Column()

@@ -13,7 +13,7 @@ import { gqlRequest } from './utils/utils';
 
 const gql = String.raw;
 
-describe('AppController (e2e)', () => {
+describe('Spaceman', () => {
   let app: INestApplication;
   let userRepository: Repository<User>;
   let sub: string | undefined = 'default';
@@ -62,7 +62,7 @@ describe('AppController (e2e)', () => {
         data: {
           me: {
             gocardlessId: null,
-            id: expect.stringMatching(/^[0-9]{1,2}$/),
+            id: expect.stringMatching(/^[0-9]{1,5}$/),
             nickname: null,
           },
         },
@@ -82,6 +82,39 @@ describe('AppController (e2e)', () => {
       expect(result.status).toBe(200);
       expect(result.body.errors.length).toBe(1);
       expect(result.body.errors[0].message).toBe('User is not authenticated');
+    });
+
+    it('should return different IDs for different users', async () => {
+      const query = gql`
+        {
+          me {
+            id
+          }
+        }
+      `;
+      const result = await gqlRequest(app, query);
+      expect(result.status).toBe(200);
+      const user1Id = result.body.data.me.id;
+      sub = 'foo';
+      const result2 = await gqlRequest(app, query);
+      expect(result.status).toBe(200);
+      expect(result2.body.data.me.id).not.toBe(user1Id);
+    });
+
+    it('should return the same IDs for the same user', async () => {
+      const query = gql`
+        {
+          me {
+            id
+          }
+        }
+      `;
+      const result = await gqlRequest(app, query);
+      expect(result.status).toBe(200);
+      const user1Id = result.body.data.me.id;
+      const result2 = await gqlRequest(app, query);
+      expect(result.status).toBe(200);
+      expect(result2.body.data.me.id).toBe(user1Id);
     });
   });
 });

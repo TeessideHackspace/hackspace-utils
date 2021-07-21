@@ -1,5 +1,5 @@
 import { Field, InputType, InterfaceType } from '@nestjs/graphql';
-import { MaxLength } from 'class-validator';
+import { IsOptional, MaxLength } from 'class-validator';
 
 @InputType()
 @InterfaceType('BaseTemplate')
@@ -8,6 +8,7 @@ export class SetAddressInput {
   @Field()
   line1!: string;
 
+  @IsOptional()
   @MaxLength(255)
   @Field({ nullable: true })
   line2?: string;
@@ -16,7 +17,7 @@ export class SetAddressInput {
   @Field()
   town!: string;
 
-  @MaxLength(255)
+  @MaxLength(10)
   @Field()
   postcode!: string;
 }

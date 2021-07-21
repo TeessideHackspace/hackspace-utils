@@ -6,7 +6,7 @@ import { gqlRequest } from './utils/utils';
 
 const gql = String.raw;
 
-describe('AppController (e2e)', () => {
+describe('Spaceman', () => {
   let app: INestApplication;
 
   beforeEach(async () => {

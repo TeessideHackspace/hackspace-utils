@@ -30,7 +30,7 @@ export class UserResolver {
   @Mutation((_returns) => User)
   setNickname(
     @Sub() sub: string,
-    @Args('nickname', { type: () => String }) nickname: string,
+    @Args('nickname', { type: () => String, nullable: true }) nickname?: string,
   ) {
     return this.usersService.updateUserBySub(sub, { nickname });
   }
