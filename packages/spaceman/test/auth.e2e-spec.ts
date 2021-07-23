@@ -8,7 +8,7 @@ import { gqlRequest, TestAuthContext } from './utils/utils';
 
 const gql = String.raw;
 
-describe('Spaceman', () => {
+describe('Auth', () => {
   let app: INestApplication;
   let userRepository: Repository<User>;
   let auth = new TestAuthContext();
@@ -34,76 +34,74 @@ describe('Spaceman', () => {
     await app.close();
   });
 
-  describe('Auth', () => {
-    it('should return a user record given a valid token', async () => {
-      const query = gql`
-        {
-          me {
-            id
-            nickname
-            gocardlessId
-          }
+  it('should return a user record given a valid token', async () => {
+    const query = gql`
+      {
+        me {
+          id
+          nickname
+          gocardlessId
         }
-      `;
-      const result = await gqlRequest(app, query);
-      expect(result.status).toBe(200);
-      expect(result.body).toMatchObject({
-        data: {
-          me: {
-            gocardlessId: null,
-            id: expect.stringMatching(/^[0-9]{1,5}$/),
-            nickname: null,
-          },
+      }
+    `;
+    const result = await gqlRequest(app, query);
+    expect(result.status).toBe(200);
+    expect(result.body).toMatchObject({
+      data: {
+        me: {
+          gocardlessId: null,
+          id: expect.stringMatching(/^[0-9]{1,5}$/),
+          nickname: null,
         },
-      });
+      },
     });
+  });
 
-    it('should return an error if no token was given', async () => {
-      auth.sub = undefined;
-      const query = gql`
-        {
-          me {
-            id
-          }
+  it('should return an error if no token was given', async () => {
+    auth.sub = undefined;
+    const query = gql`
+      {
+        me {
+          id
         }
-      `;
-      const result = await gqlRequest(app, query);
-      expect(result.status).toBe(200);
-      expect(result.body.errors.length).toBe(1);
-      expect(result.body.errors[0].message).toBe('User is not authenticated');
-    });
+      }
+    `;
+    const result = await gqlRequest(app, query);
+    expect(result.status).toBe(200);
+    expect(result.body.errors.length).toBe(1);
+    expect(result.body.errors[0].message).toBe('User is not authenticated');
+  });
 
-    it('should return different IDs for different users', async () => {
-      const query = gql`
-        {
-          me {
-            id
-          }
+  it('should return different IDs for different users', async () => {
+    const query = gql`
+      {
+        me {
+          id
         }
-      `;
-      const result = await gqlRequest(app, query);
-      expect(result.status).toBe(200);
-      const user1Id = result.body.data.me.id;
-      auth.sub = 'foo';
-      const result2 = await gqlRequest(app, query);
-      expect(result.status).toBe(200);
-      expect(result2.body.data.me.id).not.toBe(user1Id);
-    });
+      }
+    `;
+    const result = await gqlRequest(app, query);
+    expect(result.status).toBe(200);
+    const user1Id = result.body.data.me.id;
+    auth.sub = 'foo';
+    const result2 = await gqlRequest(app, query);
+    expect(result.status).toBe(200);
+    expect(result2.body.data.me.id).not.toBe(user1Id);
+  });
 
-    it('should return the same IDs for the same user', async () => {
-      const query = gql`
-        {
-          me {
-            id
-          }
+  it('should return the same IDs for the same user', async () => {
+    const query = gql`
+      {
+        me {
+          id
         }
-      `;
-      const result = await gqlRequest(app, query);
-      expect(result.status).toBe(200);
-      const user1Id = result.body.data.me.id;
-      const result2 = await gqlRequest(app, query);
-      expect(result.status).toBe(200);
-      expect(result2.body.data.me.id).toBe(user1Id);
-    });
+      }
+    `;
+    const result = await gqlRequest(app, query);
+    expect(result.status).toBe(200);
+    const user1Id = result.body.data.me.id;
+    const result2 = await gqlRequest(app, query);
+    expect(result.status).toBe(200);
+    expect(result2.body.data.me.id).toBe(user1Id);
   });
 });

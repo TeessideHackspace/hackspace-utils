@@ -32,7 +32,7 @@ export class UserResolver {
   @Roles('admin')
   @Query((_returns) => [User])
   users(@Sub() _sub: string) {
-    return [];
+    return this.usersService.findAll();
   }
 
   @Mutation((_returns) => User)
