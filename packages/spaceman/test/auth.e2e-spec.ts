@@ -105,22 +105,5 @@ describe('Spaceman', () => {
       expect(result.status).toBe(200);
       expect(result2.body.data.me.id).toBe(user1Id);
     });
-
-    it('should read the roles property from the parsed token', async () => {
-      process.env.ROLES_CLAIM = auth.rolesClaim;
-      const query = gql`
-        {
-          me {
-            id
-          }
-        }
-      `;
-      const result = await gqlRequest(app, query);
-      expect(result.status).toBe(200);
-      const user1Id = result.body.data.me.id;
-      const result2 = await gqlRequest(app, query);
-      expect(result.status).toBe(200);
-      expect(result2.body.data.me.id).toBe(user1Id);
-    });
   });
 });

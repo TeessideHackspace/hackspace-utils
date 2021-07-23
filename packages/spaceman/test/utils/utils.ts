@@ -11,11 +11,11 @@ export const gqlRequest = function (app: INestApplication, query: string) {
 export class TestAuthContext {
   rolesClaim: string = 'http://example.com/roles';
   sub: string | undefined = 'default';
-  roles: string[] = [];
+  roles: string | undefined = '';
 
   reset() {
     this.sub = 'default';
-    this.roles = [];
+    this.roles = '';
   }
 
   guard() {

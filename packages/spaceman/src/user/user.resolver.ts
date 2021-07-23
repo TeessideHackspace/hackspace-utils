@@ -13,8 +13,10 @@ import { Sub } from '../decorators/sub.decorator';
 import { SetAddressInput } from './dto/setAddress.input';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { UseGuards } from '@nestjs/common';
+import { Roles } from '../decorators/roles.decorator';
+import { RolesGuard } from '../auth/roles.guard';
 
-@UseGuards(JwtAuthGuard)
+@UseGuards(JwtAuthGuard, RolesGuard)
 @Resolver(() => User)
 export class UserResolver {
   constructor(
@@ -25,6 +27,12 @@ export class UserResolver {
   @Query((_returns) => User)
   me(@Sub() sub: string) {
     return this.usersService.getUserBySub(sub);
+  }
+
+  @Roles('admin')
+  @Query((_returns) => [User])
+  users(@Sub() _sub: string) {
+    return [];
   }
 
   @Mutation((_returns) => User)
