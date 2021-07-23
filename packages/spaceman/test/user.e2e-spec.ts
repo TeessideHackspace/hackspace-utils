@@ -1,35 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  ExecutionContext,
-  INestApplication,
-  ValidationPipe,
-} from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
 import { Repository } from 'typeorm';
 import { User } from '../src/user/user.entity';
 import { JwtAuthGuard } from '../src/auth/jwt-auth.guard';
-import { GqlExecutionContext } from '@nestjs/graphql';
-import { gqlRequest } from './utils/utils';
+import { gqlRequest, TestAuthContext } from './utils/utils';
 
 const gql = String.raw;
 
 describe('Spaceman', () => {
   let app: INestApplication;
   let userRepository: Repository<User>;
-  let sub: string | undefined = 'default';
+  let auth = new TestAuthContext();
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
       .overrideGuard(JwtAuthGuard)
-      .useValue({
-        canActivate: (context: ExecutionContext) => {
-          const ctx = GqlExecutionContext.create(context);
-          ctx.getContext().user = { sub }; // Your user object
-          return true;
-        },
-      })
+      .useValue(auth.guard())
       .compile();
 
     userRepository = moduleFixture.get('UserRepository');
@@ -40,7 +29,7 @@ describe('Spaceman', () => {
   });
 
   afterEach(async () => {
-    sub = 'default';
+    auth.reset();
     await userRepository.query(`DELETE FROM "user";`);
     await userRepository.query(`DELETE FROM "address";`);
     await app.close();

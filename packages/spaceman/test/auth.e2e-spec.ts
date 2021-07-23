@@ -1,35 +1,24 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  ExecutionContext,
-  INestApplication,
-  ValidationPipe,
-} from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import { AppModule } from '../src/app.module';
 import { Repository } from 'typeorm';
 import { User } from '../src/user/user.entity';
 import { JwtAuthGuard } from '../src/auth/jwt-auth.guard';
-import { GqlExecutionContext } from '@nestjs/graphql';
-import { gqlRequest } from './utils/utils';
+import { gqlRequest, TestAuthContext } from './utils/utils';
 
 const gql = String.raw;
 
 describe('Spaceman', () => {
   let app: INestApplication;
   let userRepository: Repository<User>;
-  let sub: string | undefined = 'default';
+  let auth = new TestAuthContext();
 
   beforeEach(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
       .overrideGuard(JwtAuthGuard)
-      .useValue({
-        canActivate: (context: ExecutionContext) => {
-          const ctx = GqlExecutionContext.create(context);
-          ctx.getContext().user = { sub }; // Your user object
-          return true;
-        },
-      })
+      .useValue(auth.guard())
       .compile();
 
     userRepository = moduleFixture.get('UserRepository');
@@ -40,7 +29,7 @@ describe('Spaceman', () => {
   });
 
   afterEach(async () => {
-    sub = 'default';
+    auth.reset();
     await userRepository.query(`DELETE FROM "user";`);
     await app.close();
   });
@@ -70,7 +59,7 @@ describe('Spaceman', () => {
     });
 
     it('should return an error if no token was given', async () => {
-      sub = undefined;
+      auth.sub = undefined;
       const query = gql`
         {
           me {
@@ -95,13 +84,30 @@ describe('Spaceman', () => {
       const result = await gqlRequest(app, query);
       expect(result.status).toBe(200);
       const user1Id = result.body.data.me.id;
-      sub = 'foo';
+      auth.sub = 'foo';
       const result2 = await gqlRequest(app, query);
       expect(result.status).toBe(200);
       expect(result2.body.data.me.id).not.toBe(user1Id);
     });
 
     it('should return the same IDs for the same user', async () => {
+      const query = gql`
+        {
+          me {
+            id
+          }
+        }
+      `;
+      const result = await gqlRequest(app, query);
+      expect(result.status).toBe(200);
+      const user1Id = result.body.data.me.id;
+      const result2 = await gqlRequest(app, query);
+      expect(result.status).toBe(200);
+      expect(result2.body.data.me.id).toBe(user1Id);
+    });
+
+    it('should read the roles property from the parsed token', async () => {
+      process.env.ROLES_CLAIM = auth.rolesClaim;
       const query = gql`
         {
           me {
