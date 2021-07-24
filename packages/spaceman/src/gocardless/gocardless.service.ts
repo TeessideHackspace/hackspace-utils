@@ -4,21 +4,23 @@ import { GocardlessMandate } from './mandate.model';
 import { GocardlessStats } from './stats.model';
 import { Mandate, Subscription } from 'gocardless-nodejs/types/Types';
 import { GocardlessSubscription } from './subscription.model';
+import { GocardlessConnectionService } from '../admin/gocardless/gocardlessConnection.service';
 
 @Injectable()
 export class GocardlessService {
-  private gocardless: Gocardless;
+  constructor(
+    private readonly gocardlessConnection: GocardlessConnectionService,
+  ) {}
 
-  constructor() {
-    this.gocardless = new Gocardless(
-      process.env.GOCARDLESS_KEY!,
-      process.env.GOCARDLESS_REDIRECT_URI!,
-    );
+  private async client() {
+    const connection = await this.gocardlessConnection.getConnection();
+    return new Gocardless(connection!.key, connection!.redirectUri);
   }
 
   async stats(): Promise<GocardlessStats> {
     try {
-      const subs = await this.gocardless.allSubscriptions();
+      const client = await this.client();
+      const subs = await client.allSubscriptions();
       const income = subs.reduce(
         (acc, cur) => acc + parseInt(cur.amount, 10),
         0,
@@ -42,9 +44,8 @@ export class GocardlessService {
     if (!gocardlessId) {
       return undefined;
     }
-    const subscription = await this.gocardless.getSubscriptionByCustomer(
-      gocardlessId,
-    );
+    const client = await this.client();
+    const subscription = await client.getSubscriptionByCustomer(gocardlessId);
     return this.formatSubscription(subscription);
   }
 
@@ -54,7 +55,8 @@ export class GocardlessService {
     if (!gocardlessId) {
       return undefined;
     }
-    const mandate = await this.gocardless.getMandateByCustomer(gocardlessId);
+    const client = await this.client();
+    const mandate = await client.getMandateByCustomer(gocardlessId);
     return this.formatMandate(gocardlessId, mandate);
   }
 

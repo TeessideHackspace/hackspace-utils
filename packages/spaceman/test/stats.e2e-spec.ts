@@ -1,44 +1,40 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication, ValidationPipe } from '@nestjs/common';
 import nock from 'nock';
-import { AppModule } from '../src/app.module';
-import { gqlRequest } from './utils/utils';
-
-const gql = String.raw;
+import { TestClient } from './utils/client';
 
 describe('Spaceman', () => {
-  let app: INestApplication;
+  const client: TestClient = new TestClient();
 
   beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
-
-    app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe());
-    await app.init();
+    process.env.ROLES_CLAIM = client.auth.rolesClaim;
+    await client.setup();
+    client.auth.sub = undefined;
   });
 
   afterEach(async () => {
-    await app.close();
+    await client.teardown();
   });
 
   describe('Public Stats', () => {
+    it('should return an error if gocardless is unconfigured', async () => {
+      const result = await client.stats.stats();
+      expect(result.status).toBe(200);
+      expect(result.body.errors.length).toBe(1);
+      expect(result.body.errors[0].message).toBe(
+        'Failed to connect to GoCardless',
+      );
+    });
+
     it('should return an error if unable to communicate with gocardless', async () => {
+      client.auth.roles = 'admin';
+      const connectionSettingsResult = await client.admin.setGocardlessConnection(
+        'foo',
+        'http://example.com',
+      );
+      expect(connectionSettingsResult.status).toBe(200);
       nock('https://api-sandbox.gocardless.com/')
         .get('/subscriptions?status=active')
         .reply(400);
-      const query = gql`
-        {
-          stats {
-            income
-            numMembers
-            average
-            numLessAverage
-          }
-        }
-      `;
-      const result = await gqlRequest(app, query);
+      const result = await client.stats.stats();
       expect(result.status).toBe(200);
       expect(result.body.errors.length).toBe(1);
       expect(result.body.errors[0].message).toBe(
@@ -47,8 +43,17 @@ describe('Spaceman', () => {
     });
 
     it('should return stats from a gocardless response', async () => {
+      client.auth.reset();
+      client.auth.roles = 'admin';
+      const connectionSettingsResult = await client.admin.setGocardlessConnection(
+        'foo',
+        'http://example.com',
+      );
+      expect(connectionSettingsResult.status).toBe(200);
+      expect(connectionSettingsResult.body.errors).not.toBeDefined();
       nock('https://api-sandbox.gocardless.com/')
         .get('/subscriptions?status=active')
+        .matchHeader('Authorization', 'Bearer foo')
         .reply(200, {
           meta: {
             cursors: {
@@ -69,17 +74,8 @@ describe('Spaceman', () => {
             },
           ],
         });
-      const query = gql`
-        {
-          stats {
-            income
-            numMembers
-            average
-            numLessAverage
-          }
-        }
-      `;
-      const result = await gqlRequest(app, query);
+      client.auth.sub = 'undefined';
+      const result = await client.stats.stats();
       expect(result.status).toBe(200);
       expect(result.body).toEqual({
         data: {
