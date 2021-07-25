@@ -117,4 +117,67 @@ describe('Admin', () => {
       expect(result.body.errors[0].message).toBe('Forbidden resource');
     });
   });
+
+  describe('Ses Connection', () => {
+    it('should return no connection to begin with', async () => {
+      client.auth.roles = 'admin';
+      const result = await client.admin.getSesConnection();
+      expect(result.status).toBe(200);
+      expect(result.body.data.sesConnection).toEqual(null);
+    });
+
+    it('should allow an admin to create a connection', async () => {
+      client.auth.roles = 'admin';
+      const mutationResult = await client.admin.setSesConnection(
+        'eu-west-1',
+        'AKIAIOSFODNN7EXAMPLE',
+        'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+      );
+      expect(mutationResult.status).toBe(200);
+
+      expect(mutationResult.body.data.setSesConnection).toMatchObject({
+        awsRegion: 'eu-west-1',
+        awsAccessKeyId: 'AKIAIOSFODNN7EXAMPLE',
+        awsSecretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+      });
+
+      const result = await client.admin.getSesConnection();
+      expect(result.status).toBe(200);
+      expect(result.body.data.sesConnection).toMatchObject({
+        awsRegion: 'eu-west-1',
+        awsAccessKeyId: 'AKIAIOSFODNN7EXAMPLE',
+        awsSecretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+      });
+    });
+
+    it('should not allow a non admin to create a connection', async () => {
+      const mutationResult = await client.admin.setSesConnection(
+        'eu-west-1',
+        'AKIAIOSFODNN7EXAMPLE',
+        'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+      );
+      expect(mutationResult.status).toBe(200);
+      expect(mutationResult.body.errors[0].message).toBe('Forbidden resource');
+    });
+
+    it('should not allow a non admin to retrieve a connection', async () => {
+      client.auth.roles = 'admin';
+      const mutationResult = await client.admin.setSesConnection(
+        'eu-west-1',
+        'AKIAIOSFODNN7EXAMPLE',
+        'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+      );
+      expect(mutationResult.status).toBe(200);
+      expect(mutationResult.body.data.setSesConnection).toMatchObject({
+        awsRegion: 'eu-west-1',
+        awsAccessKeyId: 'AKIAIOSFODNN7EXAMPLE',
+        awsSecretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',
+      });
+
+      client.auth.roles = '';
+      const result = await client.admin.getSesConnection();
+      expect(result.status).toBe(200);
+      expect(result.body.errors[0].message).toBe('Forbidden resource');
+    });
+  });
 });

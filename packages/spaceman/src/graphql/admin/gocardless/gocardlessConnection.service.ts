@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { SetGocardlessConnectionInput } from './dto/setGocardlessConnection.input';
+import { SetGocardlessConnectionInput } from './setGocardlessConnection.input';
 import { GocardlessConnection } from './gocardlessConnection.model';
 import { GocardlessConnectionEntity } from './gocardlessConnection.entity';
 

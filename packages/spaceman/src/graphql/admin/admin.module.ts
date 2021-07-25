@@ -1,11 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { GocardlessConnectionEntity } from './gocardless/gocardlessConnection.entity';
-import { GocardlessConnectionResolver } from './gocardless/gocardlessConnection.resolver';
-import { GocardlessConnectionService } from './gocardless/gocardlessConnection.service';
+import { GocardlessConnectionModule } from './gocardless/gocardlessConnection.module';
+import { SesConnectionModule } from './sesConnection/sesConnection.module';
 @Module({
-  imports: [TypeOrmModule.forFeature([GocardlessConnectionEntity])],
-  providers: [GocardlessConnectionService, GocardlessConnectionResolver],
-  exports: [GocardlessConnectionService],
+  imports: [GocardlessConnectionModule, SesConnectionModule],
+  providers: [],
+  exports: [GocardlessConnectionModule, SesConnectionModule],
 })
 export class AdminModule {}

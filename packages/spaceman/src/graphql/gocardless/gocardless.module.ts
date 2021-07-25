@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { AdminModule } from '../admin/admin.module';
+import { GocardlessConnectionModule } from '../admin/gocardless/gocardlessConnection.module';
 import { GocardlessResolver } from './gocardless.resolver';
 import { GocardlessService } from './gocardless.service';
 @Module({
-  imports: [AdminModule],
+  imports: [GocardlessConnectionModule],
   providers: [GocardlessService, GocardlessResolver],
   exports: [GocardlessService],
 })

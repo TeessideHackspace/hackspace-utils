@@ -3,7 +3,7 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { JwtAuthGuard } from '../../auth/jwt-auth.guard';
 import { RolesGuard } from '../../auth/roles.guard';
 import { Roles } from '../../decorators/roles.decorator';
-import { SetGocardlessConnectionInput } from './dto/setGocardlessConnection.input';
+import { SetGocardlessConnectionInput } from './setGocardlessConnection.input';
 import { GocardlessConnection } from './gocardlessConnection.model';
 import { GocardlessConnectionService } from './gocardlessConnection.service';
 

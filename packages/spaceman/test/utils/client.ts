@@ -73,6 +73,7 @@ export class TestClient {
     await this.repository!.query(`DELETE FROM "user";`);
     await this.repository!.query(`DELETE FROM "address";`);
     await this.repository!.query(`DELETE FROM "gocardlessConnection";`);
+    await this.repository!.query(`DELETE FROM "sesConnection";`);
     await this.app!.close();
   }
 
@@ -125,6 +126,38 @@ export class TestClient {
             key
             redirectUri
             webhookSecret
+          }
+        }
+      `;
+      return this.gqlRequest(query);
+    },
+
+    setSesConnection: async (
+      awsRegion: string,
+      awsAccessKeyId: string,
+      awsSecretAccessKey: string,
+    ) => {
+      const query = gql`
+        mutation {
+          setSesConnection(
+            connection: { awsRegion: "${awsRegion}", awsAccessKeyId: "${awsAccessKeyId}", awsSecretAccessKey: "${awsSecretAccessKey}"}
+          ) {
+            awsRegion
+            awsAccessKeyId
+            awsSecretAccessKey
+          }
+        }
+      `;
+      return this.gqlRequest(query);
+    },
+
+    getSesConnection: async () => {
+      const query = gql`
+        {
+          sesConnection {
+            awsRegion
+            awsAccessKeyId
+            awsSecretAccessKey
           }
         }
       `;
