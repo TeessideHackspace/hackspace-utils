@@ -10,4 +10,7 @@ export class GocardlessConnectionEntity {
 
   @Column()
   redirectUri!: string;
+
+  @Column()
+  webhookSecret!: string;
 }

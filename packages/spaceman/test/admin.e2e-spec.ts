@@ -69,11 +69,13 @@ describe('Admin', () => {
       const mutationResult = await client.admin.setGocardlessConnection(
         'foo',
         'http://example.com',
+        'bar',
       );
       expect(mutationResult.status).toBe(200);
       expect(mutationResult.body.data.setGocardlessConnection).toMatchObject({
         key: 'foo',
         redirectUri: 'http://example.com',
+        webhookSecret: 'bar',
       });
 
       const result = await client.admin.getGocardlessConnection();
@@ -81,6 +83,7 @@ describe('Admin', () => {
       expect(result.body.data.gocardlessConnection).toMatchObject({
         key: 'foo',
         redirectUri: 'http://example.com',
+        webhookSecret: 'bar',
       });
     });
 
@@ -88,6 +91,7 @@ describe('Admin', () => {
       const mutationResult = await client.admin.setGocardlessConnection(
         'foo',
         'http://example.com',
+        'bar',
       );
       expect(mutationResult.status).toBe(200);
       expect(mutationResult.body.errors[0].message).toBe('Forbidden resource');
@@ -98,11 +102,13 @@ describe('Admin', () => {
       const mutationResult = await client.admin.setGocardlessConnection(
         'foo',
         'http://example.com',
+        'bar',
       );
       expect(mutationResult.status).toBe(200);
       expect(mutationResult.body.data.setGocardlessConnection).toMatchObject({
         key: 'foo',
         redirectUri: 'http://example.com',
+        webhookSecret: 'bar',
       });
 
       client.auth.roles = '';

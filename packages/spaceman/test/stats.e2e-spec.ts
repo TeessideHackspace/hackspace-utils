@@ -29,6 +29,7 @@ describe('Spaceman', () => {
       const connectionSettingsResult = await client.admin.setGocardlessConnection(
         'foo',
         'http://example.com',
+        'bar',
       );
       expect(connectionSettingsResult.status).toBe(200);
       nock('https://api-sandbox.gocardless.com/')
@@ -48,6 +49,7 @@ describe('Spaceman', () => {
       const connectionSettingsResult = await client.admin.setGocardlessConnection(
         'foo',
         'http://example.com',
+        'bar',
       );
       expect(connectionSettingsResult.status).toBe(200);
       expect(connectionSettingsResult.body.errors).not.toBeDefined();

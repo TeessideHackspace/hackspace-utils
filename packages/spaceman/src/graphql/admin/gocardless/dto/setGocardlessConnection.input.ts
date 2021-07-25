@@ -11,4 +11,8 @@ export class SetGocardlessConnectionInput {
   @MaxLength(255)
   @Field()
   redirectUri!: string;
+
+  @MaxLength(255)
+  @Field()
+  webhookSecret!: string;
 }

@@ -1,16 +1,19 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AdminModule } from './admin/admin.module';
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './user/users.module';
+import { AdminModule } from './graphql/admin/admin.module';
+import { AuthModule } from './graphql/auth/auth.module';
+import { UsersModule } from './graphql/user/users.module';
+import { RawBodyMiddleware } from './webhook/rawBody.middleware';
+import { WebhookModule } from './webhook/webhook.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
+      bodyParserConfig: false,
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -30,7 +33,12 @@ import { UsersModule } from './user/users.module';
     AuthModule,
     UsersModule,
     AdminModule,
+    WebhookModule,
   ],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(RawBodyMiddleware).forRoutes('*');
+  }
+}

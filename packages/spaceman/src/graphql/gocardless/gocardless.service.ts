@@ -14,7 +14,16 @@ export class GocardlessService {
 
   private async client() {
     const connection = await this.gocardlessConnection.getConnection();
-    return new Gocardless(connection!.key, connection!.redirectUri);
+    return new Gocardless(
+      connection!.key,
+      connection!.redirectUri,
+      connection!.webhookSecret,
+    );
+  }
+
+  async validateWebhook(rawBody: string, signature: string) {
+    const client = await this.client();
+    return client.validateWebhook(signature, rawBody);
   }
 
   async stats(): Promise<GocardlessStats> {

@@ -6,7 +6,7 @@ import {
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppModule } from '../../src/app.module';
-import { JwtAuthGuard } from '../../src/auth/jwt-auth.guard';
+import { JwtAuthGuard } from '../../src/graphql/auth/jwt-auth.guard';
 import request from 'supertest';
 import { Repository } from 'typeorm';
 import { isString } from 'class-validator';
@@ -53,6 +53,7 @@ export class TestClient {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     })
+
       .overrideGuard(JwtAuthGuard)
       .useValue(this.auth.guard())
       .compile();
@@ -60,6 +61,9 @@ export class TestClient {
     this.repository = moduleFixture.get('UserRepository');
 
     this.app = moduleFixture.createNestApplication();
+
+    //@ts-ignore
+    this.app.appOptions = { bodyParser: false };
     this.app.useGlobalPipes(new ValidationPipe());
     await this.app.init();
   }
@@ -95,14 +99,19 @@ export class TestClient {
   };
 
   admin = {
-    setGocardlessConnection: async (key: string, redirectUri: string) => {
+    setGocardlessConnection: async (
+      key: string,
+      redirectUri: string,
+      webhookSecret: string,
+    ) => {
       const query = gql`
         mutation {
           setGocardlessConnection(
-            connection: { key: "${key}", redirectUri: "${redirectUri}" }
+            connection: { key: "${key}", redirectUri: "${redirectUri}", webhookSecret: "${webhookSecret}"}
           ) {
             key
             redirectUri
+            webhookSecret
           }
         }
       `;
@@ -115,6 +124,7 @@ export class TestClient {
           gocardlessConnection {
             key
             redirectUri
+            webhookSecret
           }
         }
       `;

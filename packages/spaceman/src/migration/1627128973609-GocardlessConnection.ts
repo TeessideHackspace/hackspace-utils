@@ -23,6 +23,11 @@ export class GocardlessConnection1627128973609 implements MigrationInterface {
             type: 'varchar',
             isNullable: true,
           },
+          {
+            name: 'webhookSecret',
+            type: 'varchar',
+            isNullable: true,
+          },
         ],
       }),
       false,

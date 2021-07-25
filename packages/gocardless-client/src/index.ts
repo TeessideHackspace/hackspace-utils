@@ -12,7 +12,11 @@ import {
 export type { Event } from 'gocardless-nodejs/types/Types';
 export class Gocardless {
   private gocardless: GoCardlessClient;
-  constructor(gocardlessKey: string, private redirectUrl: string) {
+  constructor(
+    gocardlessKey: string,
+    private redirectUrl: string,
+    private webhookSecret: string,
+  ) {
     const gocardlessEnv =
       gocardlessKey.split('_')[0] === 'live'
         ? Environments.Live
@@ -120,9 +124,12 @@ export class Gocardless {
     return customer.metadata.hackspaceId as string;
   }
 
-  async validateWebhook(sig: string, body: string, secret: string) {
+  async validateWebhook(sig: string, body: string) {
     return (
-      crypto.createHmac('sha256', secret).update(body).digest('hex') === sig
+      crypto
+        .createHmac('sha256', this.webhookSecret)
+        .update(body)
+        .digest('hex') === sig
     );
   }
 

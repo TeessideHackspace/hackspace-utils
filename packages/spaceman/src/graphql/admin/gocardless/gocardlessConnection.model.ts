@@ -7,4 +7,7 @@ export class GocardlessConnection {
 
   @Field((_type) => String)
   redirectUri!: string;
+
+  @Field((_type) => String)
+  webhookSecret!: string;
 }

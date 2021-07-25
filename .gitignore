@@ -5,3 +5,4 @@ packages/**/lib
 packages/**/node_modules
 .idea
 .env
+.vscode
