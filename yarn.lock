@@ -2277,6 +2277,18 @@
   resolved "https://registry.yarnpkg.com/@types/minimist/-/minimist-1.2.0.tgz#69a23a3ad29caf0097f06eda59b361ee2f0639f6"
   integrity sha1-aaI6OtKcrwCX8G7aWbNh7i8GOfY=
 
+"@types/mjml-core@*":
+  version "4.7.1"
+  resolved "https://registry.yarnpkg.com/@types/mjml-core/-/mjml-core-4.7.1.tgz#c2627499045b54eccfca38e2b532566fb0689189"
+  integrity sha512-k5IRafi93tyZBGF+0BTrcBDvG47OueI+Q7TC4V4UjGQn0AMVvL3Y+S26QF/UHMmMJW5r1hxLyv3StX2/+FatFg==
+
+"@types/mjml@^4.7.0":
+  version "4.7.0"
+  resolved "https://registry.yarnpkg.com/@types/mjml/-/mjml-4.7.0.tgz#ea31b58008f54119efda9e673af674757d35981b"
+  integrity sha512-aWWu8Lxq2SexXGs+lBPRUpN3kFf0sDRo3Y4jz7BQ15cQvMfyZOadgFJsNlHmDqI6D2Qjx0PIK+1f9IMXgq9vTA==
+  dependencies:
+    "@types/mjml-core" "*"
+
 "@types/node-fetch@2.5.10":
   version "2.5.10"
   resolved "https://registry.yarnpkg.com/@types/node-fetch/-/node-fetch-2.5.10.tgz#9b4d4a0425562f9fcea70b12cb3fcdd946ca8132"
@@ -3374,6 +3386,21 @@ aws-sdk@^2.761.0:
   version "2.767.0"
   resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.767.0.tgz#9863c8bfd5990106b95f38e9345a547fee782470"
   integrity sha512-soPZxjNpat0CtuIqm54GO/FDT4SZTlQG0icSptWYfMFYdkXe8b0tJqaPssNn9TzlgoWDCNTdaoepM6TN0rNHkQ==
+  dependencies:
+    buffer "4.9.2"
+    events "1.1.1"
+    ieee754 "1.1.13"
+    jmespath "0.15.0"
+    querystring "0.2.0"
+    sax "1.2.1"
+    url "0.10.3"
+    uuid "3.3.2"
+    xml2js "0.4.19"
+
+aws-sdk@^2.963.0:
+  version "2.963.0"
+  resolved "https://registry.yarnpkg.com/aws-sdk/-/aws-sdk-2.963.0.tgz#9655743e69e9466c7aed5962a680c330a6cad212"
+  integrity sha512-EY7EPap1c/1RxPx+Py56t9btJug3Z3PJkCfplqzNuU1QlFGs+rN8yYm9xIn8J6gbJ5D8F4Qab0GCtTmGstlHfQ==
   dependencies:
     buffer "4.9.2"
     events "1.1.1"
@@ -6363,6 +6390,11 @@ hard-rejection@^2.1.0:
   resolved "https://registry.yarnpkg.com/hard-rejection/-/hard-rejection-2.1.0.tgz#1c6eda5c1685c63942766d79bb40ae773cecd883"
   integrity sha512-VIZB+ibDhx7ObhAe7OVtoEbuP4h/MuOTHJ+J8h/eBXotJYl0fBgR72xDFCKgIh22OJZIOVNxBMWuhAr10r8HdA==
 
+harmony-reflect@^1.4.6:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/harmony-reflect/-/harmony-reflect-1.6.2.tgz#31ecbd32e648a34d030d86adb67d4d47547fe710"
+  integrity sha512-HIp/n38R9kQjDEziXyDTuW3vvoxxyxjxFzXLrBr18uB47GnSt+G9D29fqrpM5ZkspMcPICud3XsBJQ4Y2URg8g==
+
 has-ansi@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/has-ansi/-/has-ansi-2.0.0.tgz#34f5049ce1ecdf2b0649af3ef24e45ed35416d91"
@@ -6635,6 +6667,13 @@ iconv-lite@^0.6.2:
   integrity sha512-2y91h5OpQlolefMPmUlivelittSWy0rP+oYVpn6A7GwVHNE8AWzoYOBNmlwks3LobaJxgHCYZAnyNo2GgpNRNQ==
   dependencies:
     safer-buffer ">= 2.1.2 < 3.0.0"
+
+identity-obj-proxy@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/identity-obj-proxy/-/identity-obj-proxy-3.0.0.tgz#94d2bda96084453ef36fbc5aaec37e0f79f1fc14"
+  integrity sha1-lNK9qWCERT7zb7xarsN+D3nx/BQ=
+  dependencies:
+    harmony-reflect "^1.4.6"
 
 ieee754@1.1.13, ieee754@^1.1.4:
   version "1.1.13"
@@ -9223,6 +9262,11 @@ nodemailer@^6.4.11:
   version "6.4.13"
   resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.4.13.tgz#40e67cf5a32f2052258822a9394e190ea9714801"
   integrity sha512-XmtiiKza2Cqtr+ZRMchMZn9s2nmwQDeakbf+yL0ODsIXOv58UZgk/MKPOkDKqY+mvxHs87PrJK7Nf/tcpKHqYQ==
+
+nodemailer@^6.6.3:
+  version "6.6.3"
+  resolved "https://registry.yarnpkg.com/nodemailer/-/nodemailer-6.6.3.tgz#31fb53dd4d8ae16fc088a65cb9ffa8d928a69b48"
+  integrity sha512-faZFufgTMrphYoDjvyVpbpJcYzwyFnbAMmQtj1lVBYAUSm3SOy2fIdd9+Mr4UxPosBa0JRw9bJoIwQn+nswiew==
 
 nopt@^4.0.1:
   version "4.0.3"

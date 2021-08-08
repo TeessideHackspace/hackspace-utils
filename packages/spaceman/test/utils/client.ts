@@ -74,6 +74,7 @@ export class TestClient {
     await this.repository!.query(`DELETE FROM "address";`);
     await this.repository!.query(`DELETE FROM "gocardlessConnection";`);
     await this.repository!.query(`DELETE FROM "sesConnection";`);
+    await this.repository!.query(`DELETE FROM "globalSettings";`);
     await this.app!.close();
   }
 
@@ -100,6 +101,32 @@ export class TestClient {
   };
 
   admin = {
+    setGlobalSettings: async (siteName: string, adminEmail: string) => {
+      const query = gql`
+        mutation {
+          setGlobalSettings(
+            input: { siteName: "${siteName}", adminEmail: "${adminEmail}"}
+          ) {
+            siteName
+            adminEmail
+          }
+        }
+      `;
+      return this.gqlRequest(query);
+    },
+
+    getGlobalSettings: async () => {
+      const query = gql`
+        {
+          globalSettings {
+            siteName
+            adminEmail
+          }
+        }
+      `;
+      return this.gqlRequest(query);
+    },
+
     setGocardlessConnection: async (
       key: string,
       redirectUri: string,

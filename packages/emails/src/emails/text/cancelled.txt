@@ -1,5 +1,0 @@
-We're sorry to see you leave, ${name}. Your membership has been cancelled, either directly or by cancelling your direct debit. If this is a mistake, please click below to reactivate your membership.
-
-https://www.teessidehackspace.org.uk/members#changeSubscription
-
-If Teesside Hackspace didn't live up to your expectations, please email us at trustees@teessidehackspace.org.uk and let us know how we can improve.

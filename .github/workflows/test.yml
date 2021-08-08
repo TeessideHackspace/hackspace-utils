@@ -24,6 +24,7 @@ jobs:
           yarn install --frozen-lockfile
           npx lerna bootstrap
           npx lerna run build
+          yarn test
           yarn test:e2e
         env:
           CI: true
