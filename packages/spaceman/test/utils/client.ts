@@ -46,7 +46,7 @@ export class TestAuthContext {
 export class TestClient {
   public auth: TestAuthContext = new TestAuthContext();
   public app?: INestApplication;
-  private repository?: Repository<any>;
+  public repository?: Repository<any>;
   constructor() {}
 
   async setup() {
@@ -72,6 +72,7 @@ export class TestClient {
     this.auth.reset();
     await this.repository!.query(`DELETE FROM "user";`);
     await this.repository!.query(`DELETE FROM "address";`);
+    await this.repository!.query(`DELETE FROM "keycloakConnection";`);
     await this.repository!.query(`DELETE FROM "gocardlessConnection";`);
     await this.repository!.query(`DELETE FROM "sesConnection";`);
     await this.repository!.query(`DELETE FROM "globalSettings";`);
@@ -153,6 +154,38 @@ export class TestClient {
             key
             redirectUri
             webhookSecret
+          }
+        }
+      `;
+      return this.gqlRequest(query);
+    },
+
+    setKeycloakConnection: async (
+      keycloakBaseUrl: string,
+      keycloakAdminUsername: string,
+      keycloakAdminPassword: string,
+    ) => {
+      const query = gql`
+        mutation {
+          setKeycloakConnection(
+            input: { keycloakBaseUrl: "${keycloakBaseUrl}", keycloakAdminUsername: "${keycloakAdminUsername}", keycloakAdminPassword: "${keycloakAdminPassword}"}
+          ) {
+            keycloakBaseUrl
+            keycloakAdminUsername
+            keycloakAdminPassword
+          }
+        }
+      `;
+      return this.gqlRequest(query);
+    },
+
+    getKeycloakConnection: async () => {
+      const query = gql`
+        {
+          keycloakConnection {
+            keycloakBaseUrl
+            keycloakAdminUsername
+            keycloakAdminPassword
           }
         }
       `;

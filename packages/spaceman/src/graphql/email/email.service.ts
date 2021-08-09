@@ -5,8 +5,22 @@ import { SES } from 'aws-sdk';
 import mjml2html from 'mjml';
 import { readFile } from 'fs/promises';
 import { join } from 'path';
-import { Email, TemplateParams } from './templateParams';
 import { GlobalSettingsService } from '../admin/globalSettings/globalSettings.service';
+
+export interface TemplateParams {
+  recipient: string;
+  [index: string]: string;
+}
+
+export interface GlobalParams {
+  siteName: string;
+}
+
+export interface Email {
+  template: string;
+  subject: string;
+  params: TemplateParams;
+}
 
 @Injectable()
 export class EmailService {
@@ -85,7 +99,7 @@ export class EmailService {
         from: globalSettings.adminEmail,
         html: body,
       })
-      .catch((_e) => {
+      .catch((_e: any) => {
         throw new Error(`Error sending email`);
       });
   }

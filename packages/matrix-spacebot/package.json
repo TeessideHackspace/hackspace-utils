@@ -22,7 +22,6 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@teessidehackspace/keycloak-client": "^0.0.0",
     "js-yaml": "^3.14.0",
     "matrix-bot-sdk": "^0.5.4",
     "keycloak-admin": "^1.13.0"

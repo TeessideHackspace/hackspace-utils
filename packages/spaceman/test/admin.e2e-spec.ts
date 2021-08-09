@@ -236,4 +236,66 @@ describe('Admin', () => {
       expect(result.body.errors[0].message).toBe('Forbidden resource');
     });
   });
+
+  describe('Keycloak Connection', () => {
+    it('should return no connection to begin with', async () => {
+      client.auth.roles = 'admin';
+      const result = await client.admin.getKeycloakConnection();
+      expect(result.status).toBe(200);
+      expect(result.body.data.keycloakConnection).toEqual(null);
+    });
+
+    it('should allow an admin to create a connection', async () => {
+      client.auth.roles = 'admin';
+      const mutationResult = await client.admin.setKeycloakConnection(
+        'http://example.com',
+        'admin',
+        'password',
+      );
+      expect(mutationResult.status).toBe(200);
+      expect(mutationResult.body.data.setKeycloakConnection).toMatchObject({
+        keycloakBaseUrl: 'http://example.com',
+        keycloakAdminUsername: 'admin',
+        keycloakAdminPassword: 'password',
+      });
+
+      const result = await client.admin.getKeycloakConnection();
+      expect(result.status).toBe(200);
+      expect(result.body.data.keycloakConnection).toMatchObject({
+        keycloakBaseUrl: 'http://example.com',
+        keycloakAdminUsername: 'admin',
+        keycloakAdminPassword: 'password',
+      });
+    });
+
+    it('should not allow a non admin to create a connection', async () => {
+      const mutationResult = await client.admin.setKeycloakConnection(
+        'http://example.com',
+        'admin',
+        'password',
+      );
+      expect(mutationResult.status).toBe(200);
+      expect(mutationResult.body.errors[0].message).toBe('Forbidden resource');
+    });
+
+    it('should not allow a non admin to retrieve a connection', async () => {
+      client.auth.roles = 'admin';
+      const mutationResult = await client.admin.setKeycloakConnection(
+        'http://example.com',
+        'admin',
+        'password',
+      );
+      expect(mutationResult.status).toBe(200);
+      expect(mutationResult.body.data.setKeycloakConnection).toMatchObject({
+        keycloakBaseUrl: 'http://example.com',
+        keycloakAdminUsername: 'admin',
+        keycloakAdminPassword: 'password',
+      });
+
+      client.auth.roles = '';
+      const result = await client.admin.getKeycloakConnection();
+      expect(result.status).toBe(200);
+      expect(result.body.errors[0].message).toBe('Forbidden resource');
+    });
+  });
 });

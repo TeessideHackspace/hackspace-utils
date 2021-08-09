@@ -31,6 +31,12 @@ export class UsersService {
     return user;
   }
 
+  async getUserByGocardlessId(gocardlessId: string): Promise<User | undefined> {
+    return await this.usersRepository.findOne({
+      where: { gocardlessId },
+    });
+  }
+
   async updateUserBySub(sub: string, user: Partial<User>): Promise<User> {
     const result = await this.getUserBySub(sub);
     return this.usersRepository.save({ ...result, ...user });

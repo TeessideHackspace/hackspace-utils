@@ -66,7 +66,20 @@ export class GocardlessService {
     }
     const client = await this.client();
     const mandate = await client.getMandateByCustomer(gocardlessId);
-    return this.formatMandate(gocardlessId, mandate);
+    return this.formatMandate(mandate);
+  }
+
+  async getMandateById(
+    mandateId: string,
+  ): Promise<GocardlessMandate | undefined> {
+    const client = await this.client();
+    const mandate = await client.getMandateById(mandateId);
+    return this.formatMandate(mandate);
+  }
+
+  async getCustomerBySubscription(subscriptionId: string) {
+    const client = await this.client();
+    return client.getCustomerBySubscription(subscriptionId);
   }
 
   private formatSubscription(
@@ -81,10 +94,7 @@ export class GocardlessService {
         }
       : undefined;
   }
-  private formatMandate(
-    customerId: string,
-    mandate: Mandate,
-  ): GocardlessMandate | undefined {
+  private formatMandate(mandate: Mandate): GocardlessMandate | undefined {
     return mandate
       ? {
           id: mandate.id,
@@ -92,7 +102,7 @@ export class GocardlessService {
           status: mandate.status,
           createdAt: mandate.created_at,
           nextPossibleChargeDate: mandate.next_possible_charge_date,
-          customerId: customerId,
+          customerId: mandate.links.customer,
         }
       : undefined;
   }

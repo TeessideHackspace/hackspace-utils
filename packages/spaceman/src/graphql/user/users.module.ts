@@ -9,5 +9,6 @@ import { Address } from './address/address.entity';
 @Module({
   imports: [TypeOrmModule.forFeature([User, Address]), GocardlessModule],
   providers: [UsersService, UserResolver, MandateResolver],
+  exports: [UsersService],
 })
 export class UsersModule {}
